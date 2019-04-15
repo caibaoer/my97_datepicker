@@ -1,0 +1,122 @@
+<html>
+    <head>
+
+        <script src="WdatePicker.js"></script>
+        <script src="jquery-1.8.3.min.js"></script>
+        <script>
+
+
+
+            function pickedFunc(){
+	            var starttime=$("#begindate").val();
+	            var startDay=starttime.substr(0,10);//年月日
+	            var startTime=starttime.substr(10,9);//时分秒
+	            var period=7;//加7天
+	            var ArrDate=addDate(startDay,parseInt(period))+startTime;
+	            $("#enddate").val(ArrDate);
+                
+            }
+
+            function getFormatDate(arg) {
+                if (arg == undefined || arg == '') {
+                 return '';
+                }
+            var re = arg + '';
+                if (re.length < 2) {
+                 re = '0' + re;
+            }
+            return re;
+            }
+
+
+
+            //日期计算 date格式为"2019-04-18" days为1  就是加一天  
+            function addDate(date, days) {
+                if (days == undefined || days == '') {
+                         days = 1;
+                    }
+            var date = new Date(date);
+            date.setDate(date.getDate() + days);
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            return date.getFullYear() + '-' + getFormatDate(month) + '-' + getFormatDate(day);
+            }
+
+
+
+            
+
+
+
+
+            
+           
+        
+        </script>
+     
+        
+
+    </head>
+
+    <body  >
+                                         
+        A:<input class="Wdate" type="text"   onclick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})"><br/>
+
+        B:<input class="Wdate" type="text"   onclick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})"><br/>
+
+        C:<input class="Wdate" type="text"   id="d411"  value="2019-04-09 12:00:04"onclick="WdatePicker({skin:'whyGreen',minDate:'2019-04-08',maxDate:'2028-12-20',el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/><br/>
+        D:<input class="Wdate" type="text"   id="d411"  value="2019-04-08 12:00:04"onclick="WdatePicker({minDate:'2019-04-08 09:00:00',el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/><br/>
+        <p><b>下面这个例子是演示，选择了前面一个日期，后面一个日期自动填充(+7天)，会涉及到第一个方框的change事件，</b></p>
+        <p><b>但是WDatePicker屏蔽onchange事件,所以这里采用onpicked实现日期选择联动:这里使用onpicked:pickedFunc实现onchange事件效果</b></p>
+        <p><b>参考地址：https://blog.csdn.net/lijinzhou2017/article/details/79363793</b></p>
+
+        
+开始时间:<input type="text" class="Wdate" name="begindate" id="begindate" value="2019-04-11 16:51:00"  
+        
+            onclick="WdatePicker({skin:'whyGreen',el:this,dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:pickedFunc})"
+            
+        ><br>
+截止时间:<input type="text" class="Wdate" name="enddate"   id="enddate"
+onclick="WdatePicker({skin:'whyGreen',el:this,dateFmt:'yyyy-MM-dd HH:mm:ss',specialDays: [1,5]})"><br>
+        
+
+限制日期的范围是 2006-09-10到2008-12-20<input id="d411" class="Wdate" type="text" onfocus="WdatePicker({skin:'whyGreen',minDate: '2006-09-10', maxDate: '2008-12-20' })"/> <br/>
+限制日期的范围是 2008-3-8 11:30:00 到 2008-3-10 20:59:30
+<input type="text" class="Wdate" id="d412" onfocus="WdatePicker({skin:'whyGreen',dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '2008-03-08 11:30:00', maxDate: '2008-03-10 20:59:30' })" value="2008-03-09 11:00:00"/><br/>
+限制日期的范围是 2008年2月 到 2008年10月
+<input type="text" class="Wdate" id="d413" onfocus="WdatePicker({dateFmt: 'yyyy年M月', minDate: '2008-2', maxDate: '2008-10' })"/><br/> 
+限制日期的范围是 8:00:00 到 11:30:00
+<input type="text" class="Wdate" id="d414" onfocus="WdatePicker({dateFmt: 'H:mm:ss', minDate: '8:00:00', maxDate: '11:30:00' })"/><br/>
+动态限制：<br/>
+注意:日期格式必须与 realDateFmt 和 realTimeFmt 一致 <br/>
+你可以通过系统给出的动态变量,如%y(当前年),%M(当前月) %d表示(当前天)等来限度日期范围,你还可以通过#{}进行表达式运算,如:#{%d+1}:表示明天<br/>
+<br/>
+动态变量表:<br/>
+<br/>
+格式 说明 <br/>
+%y  当前年 <br/>
+%M  当前月 <br/>
+%d  当前日 <br/>
+%ld 本月最后一天 <br/>
+%H  当前时 <br/>
+%m  当前分 <br/>
+%s  当前秒 <br/>
+#{} 运算表达式,如:#{%d+1}:表示明天 <br/>
+#F{} {}之间是函数可写自定义JS代码 <br/>
+
+只能选择今天以前的日期(包括今天)
+<input id="d421" class="Wdate" type="text" onfocus="WdatePicker({skin:'whyGreen',maxDate: '%y-%M-%d'})"/><br/>
+只能选择明天以前的日期(包括明天)
+<input id="d421" class="Wdate" type="text" onfocus="WdatePicker({skin:'whyGreen',maxDate: '%y-%M-#{%d+1}' })"/><br/>
+只能选择本月的日期1号至本月最后一天
+<input id="d423" class="Wdate" type="text" onfocus="WdatePicker({minDate: '%y-%M-01', maxDate: '%y-%M-%ld' })"/>
+<br/>
+只能选择今天7:00:00至明天21:00:00的日期
+<input id="d423" class="Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate: '%y-%M-%d 07:00:00', maxDate: '%y-%M-#{%d+1} 21:00:00' })"/><br/>
+使用了运算表达式 只能选择 20小时前 至 30小时后 的日期(测试有问题)
+<input id="d425" class="Wdate" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate: '%y-%M-%d #{%H-20}:%m:%s' ,maxDate: '%y-%M-%d #{%H+30}:%m:%s' })"/></br>
+
+</body>
+
+
+</html>
